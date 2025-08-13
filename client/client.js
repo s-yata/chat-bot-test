@@ -77,3 +77,10 @@ inputTextArea.addEventListener("keydown", (event) => {
     sendMessage();
   }
 });
+
+// keyupで高さ調整
+inputTextArea.addEventListener("keyup", (event) => {
+  const target = event.target;
+  target.style.height = "auto";
+  target.style.height = (target.scrollHeight - 20) + "px";
+});
