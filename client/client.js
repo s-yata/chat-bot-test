@@ -4,6 +4,34 @@ const inputTextArea = document.getElementById("input-text-area");
 const sendButton = document.getElementById("send-button");
 const messages = document.querySelector('.messages');
 
+function formatDateTime(t) {
+  year = t.getFullYear().toString().padStart(4, "0");
+  month = (t.getMonth()+1).toString().padStart(2, "0");
+  date = t.getDate().toString().padStart(2, "0");
+
+  s = year + "-" + month + "-" + date;
+
+  hours = t.getHours().toString().padStart(2, "0");
+  minutes = t.getMinutes().toString().padStart(2, "0");
+  seconds = t.getSeconds().toString().padStart(2, "0");
+  milliseconds = t.getMilliseconds().toString().padStart(3, "0");
+
+  s += " " + hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+
+  offset = t.getTimezoneOffset();
+  if (offset < 0) {
+    offset = -offset;
+    s += " +";
+  } else {
+    s += " -";
+  }
+
+  hours = (offset / 60).toString().padStart(2, "0");
+  minutes = (offset % 60).toString().padStart(2, "0");
+  s += hours + ":" + minutes;
+  return s;
+}
+
 // 接続が開いたとき
 socket.addEventListener("open", () => {
   console.log("WebSocket: open: ", socket.url);
@@ -20,7 +48,7 @@ socket.addEventListener("message", (event) => {
   messageDiv.classList.add('message', 'other');
   messageDiv.innerHTML = `
     ${DOMPurify.sanitize(marked.parse(response.text))}
-    <div class="timestamp">${new Date().toISOString()}</div>
+    <div class="timestamp">${formatDateTime(new Date())}</div>
 `;
   // messageDiv.innerHTML = DOMPurify.sanitize(marked.parse(response.text));
   if (messageDiv.firstElementChild) {
@@ -68,7 +96,7 @@ function sendMessage() {
     messageDiv.classList.add('message', 'self');
     messageDiv.innerHTML = `
       ${DOMPurify.sanitize(marked.parse(text))}
-      <div class="timestamp">${new Date().toISOString()}</div>
+      <div class="timestamp">${formatDateTime(new Date())}</div>
 `;
     if (messageDiv.firstElementChild) {
       messageDiv.firstElementChild.style.marginTop = 0;
