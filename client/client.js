@@ -23,6 +23,15 @@ socket.addEventListener("message", (event) => {
     <div class="timestamp">${new Date().toISOString()}</div>
 `;
   // messageDiv.innerHTML = DOMPurify.sanitize(marked.parse(response.text));
+  if (messageDiv.firstElementChild) {
+    messageDiv.firstElementChild.style.marginTop = 0;
+  }
+  if (messageDiv.lastElementChild) {
+    lastElement = messageDiv.lastElementChild.previousElementSibling;
+    if (lastElement) {
+      lastElement.style.marginBottom = 0;
+    }
+  }
   messages.appendChild(messageDiv);
   console.log(`append message other`);
 });
@@ -39,6 +48,7 @@ socket.addEventListener("close", () => {
 
 // メッセージ送信関数（JSON形式）
 function sendMessage() {
+  formatDateTime(new Date());
   const text = inputTextArea.value.trim();
   if (!text) {
     console.log("Empty text");
@@ -60,6 +70,15 @@ function sendMessage() {
       ${DOMPurify.sanitize(marked.parse(text))}
       <div class="timestamp">${new Date().toISOString()}</div>
 `;
+    if (messageDiv.firstElementChild) {
+      messageDiv.firstElementChild.style.marginTop = 0;
+    }
+    if (messageDiv.lastElementChild) {
+      lastElement = messageDiv.lastElementChild.previousElementSibling;
+      if (lastElement) {
+        lastElement.style.marginBottom = 0;
+      }
+    }
     messages.appendChild(messageDiv);
     console.log(`append message self`);
   }
