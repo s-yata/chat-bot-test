@@ -71,7 +71,7 @@ function sendMessage() {
 sendButton.addEventListener("click", sendMessage);
 
 // Enterキーで送信
-inputTextArea.addEventListener("keydown", (event) => {
+inputTextArea.addEventListener("keypress", (event) => {
   if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
     sendMessage();
